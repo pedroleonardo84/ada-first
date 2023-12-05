@@ -1,8 +1,8 @@
 package br.com.ada.ifome.usuario;
 
-import br.com.ada.ifome.usuario.exceptions.CpfInvalidoException;
-import br.com.ada.ifome.usuario.exceptions.UsuarioInvalidoException;
-import lombok.AllArgsConstructor;
+import br.com.ada.ifome.commonsvalidation.Validator;
+import br.com.ada.ifome.exceptions.CpfInvalidoException;
+import br.com.ada.ifome.exceptions.UsuarioInvalidoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +10,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private Validator validator = new Validator();
 
     public Usuario salvar(Usuario usuario) {
         if (usuario == null) {
             throw new UsuarioInvalidoException();
         }
-        var isCpfValido = this.validaCpf(usuario.getCpf());
+        var isCpfValido = validator.validaCpf(usuario.getCpf());
         if (!isCpfValido) {
             throw new CpfInvalidoException();
         }
         return usuarioRepository.save(usuario); // Mockar o usuário repository...
-    }
-
-    private boolean validaCpf(String cpf) {
-        cpf = cpf.replaceAll("[^0-9]", "");
-        return cpf.length() == 11;
     }
 }

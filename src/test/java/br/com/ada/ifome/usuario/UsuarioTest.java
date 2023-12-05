@@ -1,7 +1,7 @@
 package br.com.ada.ifome.usuario;
 
-import br.com.ada.ifome.usuario.exceptions.CpfInvalidoException;
-import br.com.ada.ifome.usuario.exceptions.UsuarioInvalidoException;
+import br.com.ada.ifome.exceptions.CpfInvalidoException;
+import br.com.ada.ifome.exceptions.UsuarioInvalidoException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
