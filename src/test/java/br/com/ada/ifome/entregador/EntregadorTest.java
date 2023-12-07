@@ -8,6 +8,7 @@ import br.com.ada.ifome.exceptions.CnhInvalidoException;
 import br.com.ada.ifome.exceptions.CnhVencidaException;
 import br.com.ada.ifome.exceptions.CpfInvalidoException;
 import br.com.ada.ifome.exceptions.RgInvalidoException;
+import org.apache.tomcat.jni.Time;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,6 +34,24 @@ public class EntregadorTest {
 
     @InjectMocks
     private EntregadorService entregadorService;
+
+
+    public Documento getDocumento() throws ParseException {
+        var documento = new Documento();
+        documento.setId(1L);
+        documento.setEstado("SP");
+        documento.setNumero(12345678901L);
+        documento.setCategoria("ABCD");
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataVcto = formato.parse("31/12/2099)");
+        Date dataEmiss = formato.parse("31/12/2010)");
+
+        documento.setDataVencimento(dataVcto);
+        documento.setDataEmissao(dataEmiss);
+
+        return documento;
+    }
 
     @Test
     public void entregadorCpfInvalidoComLetra() {
@@ -84,18 +103,18 @@ public class EntregadorTest {
         assertThrows(RgInvalidoException.class, () -> entregadorService.salvar(entregador));
     }
 
-//    @Test
-//    public void entregadorComInformacoesCorretas() {
-//        // Mockar ação de save
-//        var entregador = new Entregador();
-//        entregador.setCpf("04455566633");
-//        entregador.setRg("4447487");
-//        entregador.setCnh("12345678901");
-//        when(entregadorRepository.save(any())).thenReturn(entregador);
-//        var entregadorSalvo = entregadorService.salvar(entregador);
-//
-//        assertNotNull(entregadorSalvo);
-//        // Validar se foi chamado o save do repository
-//        verify(entregadorRepository, Mockito.times(1)).save(entregador);
-//    }
+    @Test
+    public void entregadorComInformacoesCorretas() throws ParseException {
+        // Mockar ação de save
+        var entregador = new Entregador();
+        entregador.setCpf("04455566633");
+        entregador.setRg("4447487");
+        entregador.setDocumento(getDocumento());
+        when(entregadorRepository.save(any())).thenReturn(entregador);
+        var entregadorSalvo = entregadorService.salvar(entregador);
+
+        assertNotNull(entregadorSalvo);
+        // Validar se foi chamado o save do repository
+        verify(entregadorRepository, Mockito.times(1)).save(entregador);
+    }
 }
