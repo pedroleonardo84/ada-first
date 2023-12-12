@@ -16,4 +16,7 @@ public class DadosBancarios {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chave_id", referencedColumnName = "id")
     private ChavePix chavePix;
+    private TipoContaEnum tipoConta;
+    private String instituicaoBancaria;
+    private String numeroAgencia;
 }

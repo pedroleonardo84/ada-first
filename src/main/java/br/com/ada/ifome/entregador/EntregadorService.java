@@ -1,11 +1,11 @@
 package br.com.ada.ifome.entregador;
 
 import br.com.ada.ifome.commonsvalidation.Validator;
+import br.com.ada.ifome.dadosbancarios.DadosBancariosService;
 import br.com.ada.ifome.documento.DocumentoService;
 import br.com.ada.ifome.exceptions.*;
 import br.com.ada.ifome.veiculo.VeiculoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +19,8 @@ public class EntregadorService {
     private final DocumentoService documentoService = new DocumentoService();
 
     private final VeiculoService veiculoService = new VeiculoService();
+
+    private final DadosBancariosService dadosBancariosService = new DadosBancariosService();
 
     public Entregador salvar (Entregador entregador) {
         if (entregador == null) {
@@ -52,7 +54,20 @@ public class EntregadorService {
             }
         }
 
-        return entregadorRepository.save(entregador); // Mockar o usuário repository...
+        if (entregador.getDadosBancarios() != null) {
+            dadosBancariosService.validarContaBancaria(entregador.getDadosBancarios());
+            dadosBancariosService.validarTipoConta(entregador.getDadosBancarios());
+            dadosBancariosService.validarInstituicaoBancaria(entregador.getDadosBancarios());
+        }
 
+        //return entregadorRepository.save(entregador); // Mockar o usuário repository...
+        try {
+            // lógica de validação
+            return entregadorRepository.save(entregador);
+        } catch (Exception e) {
+            // Adicione logs de exceção
+            e.printStackTrace();
+            throw e; // ou trate a exceção de acordo com a lógica da sua aplicação
+        }
     }
 }
