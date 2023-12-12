@@ -4,10 +4,10 @@ package br.com.ada.ifome.entregador;
 import br.com.ada.ifome.commonsvalidation.Validator;
 import br.com.ada.ifome.documento.Documento;
 import br.com.ada.ifome.documento.DocumentoService;
-import br.com.ada.ifome.exceptions.CnhInvalidoException;
-import br.com.ada.ifome.exceptions.CnhVencidaException;
-import br.com.ada.ifome.exceptions.CpfInvalidoException;
-import br.com.ada.ifome.exceptions.RgInvalidoException;
+import br.com.ada.ifome.exceptions.*;
+import br.com.ada.ifome.veiculo.Veiculo;
+import br.com.ada.ifome.veiculo.VeiculoRepository;
+import br.com.ada.ifome.veiculo.VeiculoService;
 import org.apache.tomcat.jni.Time;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +34,6 @@ public class EntregadorTest {
 
     @InjectMocks
     private EntregadorService entregadorService;
-
 
     public Documento getDocumento() throws ParseException {
         var documento = new Documento();
@@ -116,5 +115,98 @@ public class EntregadorTest {
         assertNotNull(entregadorSalvo);
         // Validar se foi chamado o save do repository
         verify(entregadorRepository, Mockito.times(1)).save(entregador);
+    }
+
+    @Test
+    public void testVeiculoInvalidoPorAnoModelo() throws ParseException {
+        var entregador = new Entregador();
+        entregador.setCpf("12345678910");
+        entregador.setRg("1234567");
+
+        var documento = new Documento();
+        documento.setId(1L);
+        documento.setEstado("SP");
+        documento.setNumero(12345678901L);
+        documento.setCategoria("ABCD");
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataVcto = formato.parse("31/12/2099");
+        Date dataEmiss = formato.parse("31/12/2010");
+
+        documento.setDataVencimento(dataVcto);
+        documento.setDataEmissao(dataEmiss);
+
+        entregador.setDocumento(documento);
+
+        var veiculo = new Veiculo();
+        veiculo.setAnoModelo(2005);
+        veiculo.setPlaca("ABC1234");
+        veiculo.setRenavam(12345678901L);
+
+        entregador.setVeiculo(veiculo);
+
+        assertThrows(VeiculoInvalidoException.class, () -> entregadorService.salvar(entregador));
+    }
+
+    @Test
+    public void testVeiculoInvalidoPorPlaca() throws ParseException {
+        var entregador = new Entregador();
+        entregador.setCpf("12345678910");
+        entregador.setRg("1234567");
+
+        var documento = new Documento();
+        documento.setId(1L);
+        documento.setEstado("SP");
+        documento.setNumero(12345678901L);
+        documento.setCategoria("ABCD");
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataVcto = formato.parse("31/12/2099");
+        Date dataEmiss = formato.parse("31/12/2010");
+
+        documento.setDataVencimento(dataVcto);
+        documento.setDataEmissao(dataEmiss);
+
+        entregador.setDocumento(documento);
+
+        var veiculo = new Veiculo();
+        veiculo.setAnoModelo(2010);
+        veiculo.setPlaca("ABC123E");
+        veiculo.setRenavam(12345678901L);
+
+        entregador.setVeiculo(veiculo);
+
+        assertThrows(VeiculoInvalidoException.class, () -> entregadorService.salvar(entregador));
+    }
+
+    @Test
+    public void testVeiculoInvalidoPorRenavam() throws ParseException {
+        var entregador = new Entregador();
+        entregador.setCpf("12345678910");
+        entregador.setRg("1234567");
+
+        var documento = new Documento();
+        documento.setId(1L);
+        documento.setEstado("SP");
+        documento.setNumero(12345678901L);
+        documento.setCategoria("ABCD");
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataVcto = formato.parse("31/12/2099");
+        Date dataEmiss = formato.parse("31/12/2010");
+
+        documento.setDataVencimento(dataVcto);
+        documento.setDataEmissao(dataEmiss);
+
+        entregador.setDocumento(documento);
+
+        var veiculo = new Veiculo();
+        veiculo.setAnoModelo(2010);
+        veiculo.setPlaca("ABC1234");
+        veiculo.setRenavam(null);
+
+        entregador.setVeiculo(veiculo);
+
+        assertThrows(VeiculoInvalidoException.class, () -> entregadorService.salvar(entregador));
     }
 }

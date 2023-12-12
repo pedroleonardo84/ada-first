@@ -3,6 +3,7 @@ package br.com.ada.ifome.entregador;
 import br.com.ada.ifome.commonsvalidation.Validator;
 import br.com.ada.ifome.documento.DocumentoService;
 import br.com.ada.ifome.exceptions.*;
+import br.com.ada.ifome.veiculo.VeiculoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class EntregadorService {
     private Validator validator = new Validator();
 
     private final DocumentoService documentoService = new DocumentoService();
+
+    private final VeiculoService veiculoService = new VeiculoService();
 
     public Entregador salvar (Entregador entregador) {
         if (entregador == null) {
@@ -39,6 +42,14 @@ public class EntregadorService {
             throw new CnhInvalidoException();
         } catch (CnhVencidaException e1){
             throw new CnhVencidaException();
+        }
+
+        if (entregador.getVeiculo() != null) {
+            if (!veiculoService.validaDataModeloVeiculo(entregador.getVeiculo().getAnoModelo())
+                    || !veiculoService.validaPlacaVeiculo(entregador.getVeiculo().getPlaca())
+                    || !veiculoService.validaRenavamVeiculo(entregador.getVeiculo().getRenavam())) {
+                throw new VeiculoInvalidoException();
+            }
         }
 
         return entregadorRepository.save(entregador); // Mockar o usuário repository...

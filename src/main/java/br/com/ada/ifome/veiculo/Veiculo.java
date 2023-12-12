@@ -20,5 +20,5 @@ public class Veiculo {
     private String cor;
     private Long renavam;
     private boolean ativo;
-
+    private Integer anoModelo;
 }
