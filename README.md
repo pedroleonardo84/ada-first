@@ -4,6 +4,9 @@
 
 ### ✔️ Descrição do desafio
 
+
+[ Link da descrição das Atividades](https://hugobrendow97.gitbook.io/f1rst-atividades/)
+
 ---
 
 [![aula01.png](https://i.postimg.cc/D0WPb7ZK/aula01.png)](https://postimg.cc/T56DzMgk)
