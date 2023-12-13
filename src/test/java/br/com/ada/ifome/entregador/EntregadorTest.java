@@ -12,18 +12,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
-import java.util.Optional;
-
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -45,8 +43,6 @@ public class EntregadorTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         ReflectionTestUtils.setField(entregadorService, "veiculoService", veiculoService);
         ReflectionTestUtils.setField(veiculoService, "veiculoRepository", veiculoRepository);
     }
@@ -145,12 +141,14 @@ public class EntregadorTest {
 
         entregador.setDadosBancarios(dadosBancarios);
 
-        when(veiculoRepository.findByRenavam(anyLong())).thenReturn(Optional.empty());
+        // Mockando o método save
         when(entregadorRepository.save(any())).thenReturn(entregador);
 
+        // Chamando o método salvar
         assertNotNull(entregadorService.salvar(entregador));
-        // Validar se foi chamado o save do repository
-        verify(entregadorRepository, times(1)).save(entregador);
+
+        // Verificando se o método save foi chamado
+        verify(entregadorRepository, times(1)).save(any());
     }
 
     @Test

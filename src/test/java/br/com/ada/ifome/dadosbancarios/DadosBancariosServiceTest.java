@@ -1,6 +1,5 @@
 package br.com.ada.ifome.dadosbancarios;
 
-import br.com.ada.ifome.exceptions.ContaBancariaInvalidaException;
 import br.com.ada.ifome.exceptions.InstituicaoBancariaInvalidaException;
 import br.com.ada.ifome.exceptions.TipoContaInvalidoException;
 import org.junit.jupiter.api.Test;

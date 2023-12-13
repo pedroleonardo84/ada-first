@@ -60,14 +60,6 @@ public class EntregadorService {
             dadosBancariosService.validarInstituicaoBancaria(entregador.getDadosBancarios());
         }
 
-        //return entregadorRepository.save(entregador); // Mockar o usuário repository...
-        try {
-            // lógica de validação
-            return entregadorRepository.save(entregador);
-        } catch (Exception e) {
-            // Adicione logs de exceção
-            e.printStackTrace();
-            throw e; // ou trate a exceção de acordo com a lógica da sua aplicação
-        }
+        return entregadorRepository.save(entregador); // Mockar o usuário repository...
     }
 }

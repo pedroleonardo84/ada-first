@@ -1,7 +1,6 @@
 package br.com.ada.ifome.documento;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.Entity;

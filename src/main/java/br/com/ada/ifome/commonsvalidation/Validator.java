@@ -14,9 +14,4 @@ public class Validator {
         return rg.length() == 7;
     }
 
-    public boolean validaCNH(String cnh) {
-        cnh = cnh.replaceAll("[^0-9]", "");
-        return cnh.length() == 11;
-    }
-
 }

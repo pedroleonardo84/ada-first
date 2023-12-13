@@ -1,8 +1,8 @@
 package br.com.ada.ifome.entregador;
 
 import br.com.ada.ifome.dadosbancarios.DadosBancarios;
-import br.com.ada.ifome.endereco.Endereco;
 import br.com.ada.ifome.documento.Documento;
+import br.com.ada.ifome.endereco.Endereco;
 import br.com.ada.ifome.veiculo.Veiculo;
 import lombok.Data;
 

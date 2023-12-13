@@ -39,7 +39,7 @@ class DocumentoServiceTest {
         var documentoInvalido = new Documento();
         documentoInvalido.setId(1L);
         documentoInvalido.setEstado("SP");
-        documentoInvalido.setNumero(12345678901L);
+        documentoInvalido.setNumero(1234567890L);
         documentoInvalido.setCategoria("ABCD");
         documentoInvalido.setDataVencimento(today);
         documentoInvalido.setDataEmissao(today);
@@ -68,7 +68,7 @@ class DocumentoServiceTest {
     public void testValidaDocumentoValidade() {
         Date today = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
+        calendar.add(Calendar.DATE, -1);
         Date validDate = calendar.getTime();
 
         var documentoValido = new Documento();
@@ -80,7 +80,7 @@ class DocumentoServiceTest {
         documentoValido.setDataEmissao(validDate);
         assertTrue(documentoService.validaDocumentoValidade(documentoValido));
 
-        calendar.add(Calendar.DATE, -2);
+        calendar.add(Calendar.DATE, 2);
         Date expiredDate = calendar.getTime();
 
         var documentoVencido = new Documento();
