@@ -28,21 +28,21 @@ public class DadosBancariosService {
         }
     }
 
-    private boolean validarNumeroAgencia(String numeroAgencia) {
+    boolean validarNumeroAgencia(String numeroAgencia) {
         if (numeroAgencia == null || numeroAgencia.isEmpty() || !numeroAgencia.matches("\\d+")) {
             return false;
         }
         return true;
     }
 
-    private boolean validarNumeroConta(String numeroConta) {
+    boolean validarNumeroConta(String numeroConta) {
         if (numeroConta == null || numeroConta.isEmpty() || !numeroConta.matches("\\d+")) {
             return false;
         }
         return true;
     }
 
-    private boolean instituicaoBancariaValida(String instituicaoBancaria) {
+    boolean instituicaoBancariaValida(String instituicaoBancaria) {
         if (instituicaoBancaria == null || instituicaoBancaria.isEmpty() || !instituicaoBancaria.matches("\\d+")) {
             return false;
         }
